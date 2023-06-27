@@ -2,9 +2,11 @@ package ru.yakhin.coincollections.model;
 
 public class Coin {
     private int id;
-    private String currency;
+    private String denomination;
     private String name;
     private String date;
+    private String description;
+    private String coin_sides;
 
     public int getId() {
         return id;
@@ -14,12 +16,12 @@ public class Coin {
         this.id = id;
     }
 
-    public String getCurrency() {
-        return currency;
+    public String getDenomination() {
+        return denomination;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setDenomination(String denomination) {
+        this.denomination = denomination;
     }
 
     public String getName() {
@@ -36,5 +38,19 @@ public class Coin {
 
     public void setDate(String date) {
         this.date = date;
+    }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public String getCoin_sides() {
+        return coin_sides;
+    }
+
+    public void setCoin_sides(String coin_sides) {
+        this.coin_sides = coin_sides;
     }
 }

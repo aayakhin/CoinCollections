@@ -14,20 +14,24 @@
     <form th:method="POST" th:action="@{/addcoin}" th:object="${coin}">
       <div class="row mt-4 bg-danger">
         <div class="col-2">
-          <label for="id">№</label>
-          <input class="form-control" type="text" th:field="*{id}" placeholder="ID" id="id"/>
-        </div>
-        <div class="col-2">
           <label for="name">Название:</label>
           <input class="form-control" type="text" th:field="*{name}" placeholder="Name" id="name" required/>
         </div>
         <div class="col-2">
-          <label for="currency">Идентификатор:</label>
-          <input class="form-control" type="text" th:field="*{currency}" placeholder="Currency" id="currency"/>
+          <label for="denomination">Номинал:</label>
+          <input class="form-control" type="text" th:field="*{denomination}" id="denomination"/>
         </div>
         <div class="col-2">
           <label for="date">Год выпуска:</label>
-          <input class="form-control" type="number" th:field="*{date}" placeholder="Date" id="date"/>
+          <input class="form-control" type="number" th:field="*{date}" id="date"/>
+        </div>
+        <div class="col-2">
+          <label for="description">Информация:</label>
+          <input class="form-control" type="text" th:field="*{description}" id="description" required/>
+        </div>
+        <div class="col-2">
+          <label for="coin_sides">Описание аверса и реверса</label>
+          <input class="form-control" type="text" th:field="*{coin_sides}" id="coin_sides" required/>
         </div>
         <div class="col-4"></div>
         <div class="col-4">
