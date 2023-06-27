@@ -11,10 +11,11 @@
     <div class="container" style="max-width:1200px; background-color:white">
         <div class="row">
             <h2>Coin</h2>
-            <p th:text="${coin.getId()}"></p>
-            <p th:text="${coin.getName()}"></p>
-            <p th:text="${coin.getCurrency()}"></p>
-            <p th:text="${coin.getDate()}"></p>
+            <span th:text="${coin.getName()}"/>
+            <span th:text="${coin.getDenomination()}"/>
+            <span th:text="${coin.getDate()}"/>
+            <span th:text="${coin.getDescription()}"/>
+            <span th:text="${coin.getCoin_sides()}"/>
         </div>
         <a href="/" >На главную</a>
         <form th:method="POST" th:action="@{/delete/{id}(id=${coin.getId()})}">

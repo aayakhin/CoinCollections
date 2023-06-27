@@ -10,11 +10,12 @@ public class CoinMapper implements RowMapper<Coin> {
     @Override
     public Coin mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         Coin coin = new Coin();
-        coin = new Coin();
         coin.setId(resultSet.getInt("id"));
-        coin.setCurrency(resultSet.getString("currency"));
+        coin.setDenomination(resultSet.getString("denomination"));
         coin.setName(resultSet.getString("name"));
         coin.setDate(resultSet.getString("date"));
+        coin.setDescription(resultSet.getString("description"));
+        coin.setCoin_sides(resultSet.getString("coin_sides"));
         return coin;
     }
 }

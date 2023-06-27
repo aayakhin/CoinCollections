@@ -38,7 +38,7 @@ public class CoinDAO {
                 Coin coin = new Coin();
                 coin.setId(resultSet.getInt("id"));
                 coin.setName(resultSet.getString("name"));
-                coin.setCurrency(resultSet.getString("currency"));
+                coin.setCurrency(resultSet.getString("denomination"));
                 coin.setDate(resultSet.getString("date"));
                 coins.add(coin);
             }
@@ -49,8 +49,8 @@ public class CoinDAO {
     }*/
 
     public void add(Coin coin) {
-        jdbcTemplate.update("INSERT INTO public.coin VALUES(?, ?, ?, ?)", coin.getId(), coin.getName(),
-                coin.getCurrency(), coin.getDate());
+        jdbcTemplate.update("INSERT INTO public.coin(name, denomination, date, description, coin_sides) VALUES(?, ?, ?, ?, ?)", coin.getName(),
+                coin.getDenomination(), coin.getDate(), coin.getDescription(), coin.getCoin_sides());
     }
     public void delete(int id){
         jdbcTemplate.update("DELETE FROM public.coin WHERE id=?", id);
