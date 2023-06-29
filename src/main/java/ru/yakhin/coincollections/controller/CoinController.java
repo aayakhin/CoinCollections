@@ -25,7 +25,7 @@ public class CoinController {
     @GetMapping("/{id}")
     public String showById(@PathVariable("id") int id, Model model){
         model.addAttribute("coin", coinDAO.showById(id));
-        return "coinById";
+        return "editCoin";
     }
 
     @GetMapping("/search")
@@ -33,11 +33,6 @@ public class CoinController {
         model.addAttribute("coinByName", coinDAO.index());
         return "searchresult";
     }
-    /* @GetMapping("/search/{name}")
-     public String showByName(@PathVariable("name") String name, Model model){
-         model.addAttribute("coinByName", coinDAO.showByName(name));
-         return "searchresult";
-     }*/
     @GetMapping("/addcoin")
     public String addcoin(Model model){
         model.addAttribute("coin", new Coin());
@@ -53,6 +48,11 @@ public class CoinController {
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id){
         coinDAO.delete(id);
+        return "redirect:/";
+    }
+    @PostMapping("/edit/{id}")
+    public String update(@ModelAttribute("coin") Coin coin, @PathVariable("id") int id){
+        coinDAO.update(coin, id);
         return "redirect:/";
     }
 }

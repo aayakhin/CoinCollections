@@ -14,16 +14,35 @@
 
         <div class="row">
                 <h2>Coins</h2>
-                <div th:each="coins: ${coin}">
-                    <a th:href="@{/{id}(id=${coins.getId()})}" th:text="${coins.getName()}">user</a>
-                </div>
+            <table border="1px" rules="all">
+                <tr>
+                    <td>Название</td>
+                    <td>Номинал</td>
+                    <td>Дата</td>
+                    <td>Информация</td>
+                    <td>Описание аверса и реверса</td>
+                </tr>
+                <tr th:each="coins: ${coin}">
+                    <td>
+                        <a th:href="@{/{id}(id=${coins.getId()})}" th:text="${coins.getName()}"> </a>
+                    </td>
+                    <td>
+                        <span th:text="${coins.getDenomination()}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${coins.getDate()}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${coins.getDescription()}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${coins.getCoin_sides()}"></span>
+                    </td>
+                </tr>
+            </table>
             </div>
-            <a href="/addcoin">Add new coin</a>
-           <!--<form method="POST" th:action="@{/search}" th:object="{coinByName}">
-                Coin name: <input type="text" name="name" th:value>
-                <input type="submit">
-            </form>-->
 
+            <a href="/addcoin">Add new coin</a>
         </div>
     </div>
 
