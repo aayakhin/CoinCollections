@@ -33,11 +33,7 @@ public class CoinDAO {
     }
 
     public void update(Coin updatedCoin, int id) {
-        Coin coinToUpdate = showById(id);
-        coinToUpdate.setName(updatedCoin.getName());
-        coinToUpdate.setDenomination(updatedCoin.getDenomination());
-        coinToUpdate.setDate(updatedCoin.getDate());
-        coinToUpdate.setDescription(updatedCoin.getDescription());
-        coinToUpdate.setCoin_sides(updatedCoin.getCoin_sides());
+        jdbcTemplate.update("UPDATE public.coin SET name=?, denomination=?, date=?, description=?, coin_sides=? WHERE id=?",
+                updatedCoin.getName(), updatedCoin.getDenomination(), updatedCoin.getDate(), updatedCoin.getDescription(), updatedCoin.getCoin_sides(), id);
     }
 }
