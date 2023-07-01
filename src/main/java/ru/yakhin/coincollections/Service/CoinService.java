@@ -18,6 +18,7 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 public class CoinService {
+  
     private final CoinRepository coinRepository;
     @Autowired
     public CoinService(CoinRepository coinRepository) {
