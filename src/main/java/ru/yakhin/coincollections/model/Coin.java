@@ -1,9 +1,13 @@
 package ru.yakhin.coincollections.model;
 
-import javax.persistence.*;
+
+
+import jakarta.persistence.*;
+
+
 
 @Entity
-@Table(name = "coin", schema = "public")
+@Table(name = "coin")
 public class Coin {
     @Id
     @Column(name = "id")

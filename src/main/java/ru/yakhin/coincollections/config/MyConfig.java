@@ -1,16 +1,13 @@
 package ru.yakhin.coincollections.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -22,6 +19,7 @@ import java.util.Properties;
 @ComponentScan("ru.yakhin.coincollections")
 @PropertySource("classpath:database.properties")
 @EnableTransactionManagement
+@EnableJpaRepositories("ru.yakhin.coincollections.repository")
 public class MyConfig implements WebMvcConfigurer {
 
     private final Environment environment;
@@ -40,30 +38,10 @@ public class MyConfig implements WebMvcConfigurer {
 
         return dataSource;
     }
-   /* @Bean
-    public JdbcTemplate jdbcTemplate(){
-        return new JdbcTemplate(dataSource());
-    }*/
     private Properties hibernateProperties(){
         Properties properties = new Properties();
         properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
-        properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
 
         return properties;
-    }
-    @Bean
-    public LocalSessionFactoryBean sessionFactory(){
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("ru.yakhin.coincollections.model");
-        sessionFactory.setHibernateProperties(hibernateProperties());
-
-        return sessionFactory;
-    }
-    @Bean
-    public PlatformTransactionManager hibernateTransactionManager(){
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
-        return transactionManager;
     }
 }
