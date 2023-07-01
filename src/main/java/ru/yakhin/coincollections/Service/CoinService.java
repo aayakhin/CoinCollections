@@ -62,8 +62,7 @@ public class CoinService {
             int toIndex = Math.min(startItem+pageSize, coins.size());
             list = coins.subList(startItem, toIndex);
         }
-        Page<Coin> coinPage =
-                new PageImpl<Coin>(list, PageRequest.of(currentPage,pageSize), coins.size());
-        return coinPage;
+
+        return new PageImpl<>(list, PageRequest.of(currentPage,pageSize), coins.size());
     }
 }
