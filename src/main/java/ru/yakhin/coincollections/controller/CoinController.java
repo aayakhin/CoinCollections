@@ -42,7 +42,7 @@ public class CoinController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        return "index.html";
+        return "index";
     }
     @GetMapping("/{id}")
     public String showById(@PathVariable("id") int id, Model model){
