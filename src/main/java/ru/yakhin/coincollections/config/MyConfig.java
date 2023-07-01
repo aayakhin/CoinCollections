@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.sql.DataSource;
-import java.util.Properties;
-
 @Configuration
 @EnableWebMvc
 @ComponentScan("ru.yakhin.coincollections")
@@ -37,11 +35,5 @@ public class MyConfig implements WebMvcConfigurer {
         dataSource.setPassword(environment.getProperty("database.password"));
 
         return dataSource;
-    }
-    private Properties hibernateProperties(){
-        Properties properties = new Properties();
-        properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
-
-        return properties;
     }
 }
