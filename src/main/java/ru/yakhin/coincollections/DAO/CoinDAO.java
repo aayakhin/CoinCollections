@@ -1,39 +1,50 @@
 package ru.yakhin.coincollections.DAO;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.yakhin.coincollections.model.Coin;
 
 import java.util.List;
 
 @Component
 public class CoinDAO {
-    private final JdbcTemplate jdbcTemplate;
+
+    private final SessionFactory sessionFactory;
     @Autowired
-    public CoinDAO (JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate=jdbcTemplate;
+    public CoinDAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
+    @Transactional
     public List<Coin> index() {
-
-        return jdbcTemplate.query("SELECT * FROM public.coin", new CoinMapper());
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("from Coin", Coin.class).getResultList();
 
     }
+    @Transactional
     public Coin showById(int id){
-        return jdbcTemplate.query("SELECT * FROM public.coin WHERE id=?", new Object[]{id}, new CoinMapper())
-                .stream().findAny().orElse(null);
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Coin.class, id);
     }
-
+    @Transactional
     public void add(Coin coin) {
-        jdbcTemplate.update("INSERT INTO public.coin(name, denomination, date, description, coin_sides) VALUES(?, ?, ?, ?, ?)", coin.getName(),
-                coin.getDenomination(), coin.getDate(), coin.getDescription(), coin.getCoin_sides());
+        Session session = sessionFactory.getCurrentSession();
+        session.save(coin);
     }
     public void delete(int id){
-        jdbcTemplate.update("DELETE FROM public.coin WHERE id=?", id);
+        Session session = sessionFactory.getCurrentSession();
+        session.delete(session.get(Coin.class,id));
     }
 
     public void update(Coin updatedCoin, int id) {
-        jdbcTemplate.update("UPDATE public.coin SET name=?, denomination=?, date=?, description=?, coin_sides=? WHERE id=?",
-                updatedCoin.getName(), updatedCoin.getDenomination(), updatedCoin.getDate(), updatedCoin.getDescription(), updatedCoin.getCoin_sides(), id);
+        Session session = sessionFactory.getCurrentSession();
+        Coin coinToUpdate = session.get(Coin.class, id);
+        coinToUpdate.setDenomination(updatedCoin.getDenomination());
+        coinToUpdate.setName(updatedCoin.getName());
+        coinToUpdate.setDate(updatedCoin.getDate());
+        coinToUpdate.setDescription(updatedCoin.getDescription());
+        coinToUpdate.setCoin_sides(updatedCoin.getCoin_sides());
     }
 }

@@ -9,5 +9,4 @@ public class CoinCollectionsApplication {
     public static void main(String[] args) {
         SpringApplication.run(CoinCollectionsApplication.class, args);
     }
-
 }

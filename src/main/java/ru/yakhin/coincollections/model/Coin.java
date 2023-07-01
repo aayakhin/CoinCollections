@@ -1,13 +1,33 @@
 package ru.yakhin.coincollections.model;
 
-public class Coin {
-    private int id;
-    private String denomination;
-    private String name;
-    private String date;
-    private String description;
-    private String coin_sides;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "coin", schema = "public")
+public class Coin {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(name = "denomination")
+    private String denomination;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "date")
+    private String date;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "coin_sides")
+    private String coin_sides;
+    public Coin() {
+    }
+    public Coin(String denomination, String name, String date, String description, String coin_sides) {
+        this.denomination = denomination;
+        this.name = name;
+        this.date = date;
+        this.description = description;
+        this.coin_sides = coin_sides;
+    }
     public int getId() {
         return id;
     }
