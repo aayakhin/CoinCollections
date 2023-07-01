@@ -23,11 +23,27 @@ public class CoinController {
         this.coinService = coinService;
     }
 
-/*    @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("coin", coinService.findall());
-        return "index";
-    }*/
+    @GetMapping("/")
+    public String index(
+            Model model,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size) {
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+
+        Page<Coin> coinPage = coinService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        model.addAttribute("coin", coinPage);
+
+        int totalPages = coinPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
+        return "index.html";
+    }
     @GetMapping("/{id}")
     public String showById(@PathVariable("id") int id, Model model){
         model.addAttribute("coin", coinService.findOne(id));
@@ -60,26 +76,5 @@ public class CoinController {
     public String update(@ModelAttribute("coin") Coin coin, @PathVariable("id") int id){
         coinService.update(coin, id);
         return "redirect:/";
-    }
-    @GetMapping("/")
-    public String index(
-            Model model,
-            @RequestParam("page") Optional<Integer> page,
-            @RequestParam("size") Optional<Integer> size) {
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(5);
-
-        Page<Coin> coinPage = coinService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
-        model.addAttribute("coin", coinPage);
-
-        int totalPages = coinPage.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-
-        return "index.html";
     }
 }
