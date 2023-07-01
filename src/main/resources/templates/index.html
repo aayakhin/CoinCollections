@@ -14,14 +14,16 @@
 
         <div class="row">
                 <h2>Coins</h2>
-            <table border="1px" rules="all">
-                <tr>
-                    <td>Название</td>
-                    <td>Номинал</td>
-                    <td>Дата</td>
-                    <td>Информация</td>
-                    <td>Описание аверса и реверса</td>
-                </tr>
+            <table class="table">
+                <thead>
+                    <tr class="table-secondary">
+                        <th>Название</th>
+                        <th>Номинал</th>
+                        <th>Дата</th>
+                        <th>Информация</th>
+                        <th>Описание аверса и реверса</th>
+                    </tr>
+                </thead>
                 <tr th:each="coins: ${coin}">
                     <td>
                         <a th:href="@{/{id}(id=${coins.getId()})}" th:text="${coins.getName()}"> </a>
@@ -37,9 +39,14 @@
                     </td>
                     <td>
                         <span th:text="${coins.getCoin_sides()}"></span>
-                    </td>
                 </tr>
             </table>
+            <div th:if="${coin.totalPages > 0}" class="pagination"
+                 th:each="pageNumber : ${pageNumbers}">
+                <a th:href="@{/(size=${coin.size}, page=${pageNumber})}"
+                   th:text=${pageNumber}
+                   th:class="${pageNumber==coin.number + 1} ? active"></a>
+            </div>
             </div>
 
             <a href="/addcoin">Add new coin</a>
