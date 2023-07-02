@@ -64,4 +64,8 @@ public class CoinService {
 
         return new PageImpl<>(list, PageRequest.of(currentPage,pageSize), coins.size());
     }
+    public Page<Coin> search(String keyword, Pageable pageable){
+        final Page<Coin> coins = coinRepository.findByNameContainingIgnoreCase(keyword,pageable);
+        return coins;
+    }
 }

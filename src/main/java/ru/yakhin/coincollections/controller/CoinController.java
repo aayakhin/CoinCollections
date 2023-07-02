@@ -3,6 +3,7 @@ package ru.yakhin.coincollections.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +28,20 @@ public class CoinController {
     public String index(
             Model model,
             @RequestParam("page") Optional<Integer> page,
-            @RequestParam("size") Optional<Integer> size) {
+            @RequestParam("size") Optional<Integer> size,
+            @RequestParam(required = false) String keyword) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
+        Pageable paging = PageRequest.of(currentPage-1, pageSize);
+        Page<Coin> coinPage ;
 
-        Page<Coin> coinPage = coinService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
-        model.addAttribute("coin", coinPage);
+        if (keyword==null){
+            coinPage = coinService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        } else {
+            coinPage = coinService.search(keyword, paging);
+        }
+
+        model.addAttribute("coinPaginated", coinPage);
 
         int totalPages = coinPage.getTotalPages();
         if (totalPages > 0) {
@@ -41,6 +50,8 @@ public class CoinController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
+
+        model.addAttribute("keyword", keyword);
 
         return "index";
     }
