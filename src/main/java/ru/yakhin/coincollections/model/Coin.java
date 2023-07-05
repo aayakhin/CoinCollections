@@ -23,14 +23,29 @@ public class Coin {
     private String description;
     @Column(name = "coin_sides")
     private String coin_sides;
+
+    @ManyToOne
+    @JoinColumn(name = "c_id", referencedColumnName = "country_id")
+    private Country country;
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+
     public Coin() {
     }
-    public Coin(String denomination, String name, String date, String description, String coin_sides) {
+    public Coin(String denomination, String name, String date, String description, String coin_sides, Country country) {
         this.denomination = denomination;
         this.name = name;
         this.date = date;
         this.description = description;
         this.coin_sides = coin_sides;
+        this.country = country;
     }
     public int getId() {
         return id;

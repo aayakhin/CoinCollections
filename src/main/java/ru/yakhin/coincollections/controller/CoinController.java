@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.yakhin.coincollections.Service.CoinService;
+import ru.yakhin.coincollections.Service.CountryService;
 import ru.yakhin.coincollections.model.Coin;
+import ru.yakhin.coincollections.model.Country;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,10 +20,12 @@ import java.util.stream.IntStream;
 @Controller
 public class CoinController {
     private final CoinService coinService;
+    private final CountryService countryService;
 
     @Autowired
-    public CoinController(CoinService coinService) {
+    public CoinController(CoinService coinService, CountryService countryService) {
         this.coinService = coinService;
+        this.countryService = countryService;
     }
 
     @GetMapping("/")
@@ -52,7 +56,11 @@ public class CoinController {
         }
 
         model.addAttribute("keyword", keyword);
-
+        List<Country> country= countryService.countryAll();
+        List<Coin> coinby=coinService.coinsByCountry();
+        model.addAttribute("coinBy", coinby);
+        model.addAttribute("countryAll", country);
+        model.addAttribute("coin", new Coin());
         return "index";
     }
     @GetMapping("/{id}")
@@ -66,16 +74,10 @@ public class CoinController {
         model.addAttribute("coinByName", coinService.findall());
         return "searchresult";
     }
-    @GetMapping("/addcoin")
-    public String addcoin(Model model){
-        model.addAttribute("coin", new Coin());
-        return "addcoin";
-    }
-
     @PostMapping("/addcoin")
-    public String add(@ModelAttribute("coin") Coin coin){
-        coinService.save(coin);
-        return "redirect:/addcoin";
+    public String add(Coin coin){
+         coinService.save(coin);
+        return "redirect:/";
     }
 
     @PostMapping("/delete/{id}")

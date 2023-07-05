@@ -17,89 +17,146 @@
 </head>
 <body>
 <div style="background-color:#dcd0ff">
-    <div class="container-fluid" style="max-width: 1200px; margin: 0 auto; height: 100vh; background: #ffffff">
+    <div class="container-fluid" style="margin: 0 auto; height: 100vh; background: #ffffff">
+
         <div class="row">
-            <a class="mt-2" href="/"><h2>Coins</h2></a>
-        </div>
-        <div class="my-2">
-            <form th:action="@{/}" id="searchForm">
-                <div class="row d-flex">
-                    <div class="col mt-2 mx-2">
-                        <div class="search">
-                            <i class="fa fa-search"></i>
-                            <input id="keyword" type="search" name="keyword" th:value="${keyword}" class="form-control"
-                                   placeholder="Enter keyword">
-                            <button type="submit" class="btn btn-secondary">Search</button>
+            <div class="col-2 bg-dark" style="height: 100vh">
+                <div class="text-white">Здесь будет фильтр</div>
+                <div class="form-check text-white content-center" th:each="cntr: ${countryAll}">
+                    <input class="form-check-input" type="checkbox" value="" th:id="${cntr.getCountryName()}">
+                    <label class="form-check-label" th:for="${cntr.getCountryName()}" th:text="${cntr.getCountryName()}">
+                        Default checkbox
+                    </label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <a class="mt-2" href="/"><h2>Coins</h2></a>
+                </div>
+                <div class="my-2">
+                    <form th:action="@{/}" id="searchForm">
+                        <div class="row d-flex">
+                            <div class="col-4 mt-2 mx-2">
+                                <div class="search">
+                                    <i class="fa fa-search"></i>
+                                    <input id="keyword" type="search" name="keyword" th:value="${keyword}" class="form-control"
+                                           placeholder="Enter keyword">
+                                    <button type="submit" class="btn btn-secondary">Search</button>
+                                </div>
+                            </div>
+                            <div class="col mt-2 mx-2">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    Добавить монету
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <table class="table text-center">
+                    <thead>
+                    <tr class="table-secondary">
+                        <th>Название</th>
+                        <th>Номинал</th>
+                        <th>Год выпуска</th>
+                        <th>Страна</th>
+                        <th>Информация</th>
+                        <th>Описание аверса и реверса</th>
+                    </tr>
+                    </thead>
+                    <tr th:each="coins: ${coinPaginated}">
+                        <td>
+                            <a th:href="@{/{id}(id=${coins.getId()})}" th:text="${coins.getName()}"> </a>
+                        </td>
+                        <td>
+                            <span th:text="${coins.getDenomination()}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${coins.getDate()}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${coins.getCountry().getCountryName()}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${coins.getDescription()}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${coins.getCoin_sides()}"></span>
+                        </td>
+                    </tr>
+                </table>
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col">
+                        <div class="text-center">Записей на странице <a th:href="@{/(size=3, page=${pageNumber})}">3</a>
+                            <a th:href="@{/(size=5, page=${pageNumber})}">5</a>
+                            <a th:href="@{/(size=10, page=${pageNumber})}">10</a>
                         </div>
                     </div>
-                    <div class="col input-group mt-2 mx-2">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="pageSize">Items per page:</label>
+
+                </div>
+                <nav aria-label="Page navigation example" >
+                    <ul th:if="${coinPaginated.totalPages > 0}" class="pagination justify-content-center">
+                        <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+                            <a class="page-link" th:href="@{/(size=${coinPaginated.size}, page=${pageNumber})}"
+                               th:classappend="${pageNumber==coinPaginated.number + 1} ? active" th:text=${pageNumber}></a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Добавить монету</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="addNewCoin" th:method="POST" th:action="@{/addcoin}" th:object="${coin}">
+                                    <div class="mt-2">
+                                        <label for="name">Название</label>
+                                        <input class="form-control" type="text" th:field="*{name}" id="name"/>
+                                    </div>
+                                    <div class="mt-2">
+                                        <label for="denomination">Номинал</label>
+                                        <input class="form-control" type="text" th:field="*{denomination}" id="denomination"/>
+                                    </div>
+                                    <div class="mt-2">
+                                        <label for="date">Год выпуска</label>
+                                        <input class="form-control" type="text" th:field="*{date}" id="date"/>
+                                    </div>
+                                    <div class="mt-2">
+                                        <label for="description">Информация</label>
+                                        <input class="form-control" type="text" th:field="*{description}" id="description"/>
+                                    </div>
+                                    <div class="mt-2">
+                                        <label for="coin_sides">Описание аверса и реверса</label>
+                                        <input class="form-control" type="text" th:field="*{coin_sides}" id="coin_sides"/>
+                                    </div>
+                                    <div class="mt-2">
+                                        <label for="country">Выберите страну</label>
+                                        <select id="country" th:field="*{country}" class="form-select">
+                                            <option th:each="country: ${countryAll}" th:value="${country.getId()}" th:text="${country.getCountryName()}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                        <input type="submit" for="addNewCoin" class="btn btn-primary"/>
+                                    </div>
+                                </form>
+                            </div>
+
                         </div>
-                        <select form="searchForm" name="size" th:value="${pageSize}" onchange="changePageSize()" class="size-select" id="pageSize">
-                            <option th:each="s : ${ {3, 6, 9} }" th:value="${s}" th:text="${s}" th:selected="${s == pageSize}"></option>
-                        </select>
-                    </div>
-                    <div class="col mt-2 mx-2">
-                        <button id="btnClear" class="btn btn-info">Clear</button>
                     </div>
                 </div>
-            </form>
+            </div>
+
+
         </div>
-        <table class="table">
-            <thead>
-                <tr class="table-secondary">
-                    <th>Название</th>
-                    <th>Номинал</th>
-                    <th>Дата</th>
-                    <th>Информация</th>
-                    <th>Описание аверса и реверса</th>
-                </tr>
-            </thead>
-            <tr th:each="coins: ${coinPaginated}">
-                <td>
-                    <a th:href="@{/{id}(id=${coins.getId()})}" th:text="${coins.getName()}"> </a>
-                </td>
-                <td>
-                    <span th:text="${coins.getDenomination()}"></span>
-                </td>
-                <td>
-                    <span th:text="${coins.getDate()}"></span>
-                </td>
-                <td>
-                    <span th:text="${coins.getDescription()}"></span>
-                </td>
-                <td>
-                    <span th:text="${coins.getCoin_sides()}"></span>
-                </td>
-            </tr>
-        </table>
-        <nav aria-label="Page navigation example" >
-            <ul th:if="${coinPaginated.totalPages > 0}" class="pagination justify-content-center">
-                <li class="page-item" th:each="pageNumber : ${pageNumbers}">
-                    <a class="page-link" th:href="@{/(size=${coinPaginated.size}, page=${pageNumber})}"
-                       th:classappend="${pageNumber==coinPaginated.number + 1} ? active" th:text=${pageNumber}></a>
-                </li>
-            </ul>
-        </nav>
-        <a href="/addcoin">Add new coin</a>
     </div>
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        // ...
-        $("#btnClear").on("click", function (e) {
-            e.preventDefault();
-            $("#keyword").text("");
-            window.location = "[[@{/}]]";
-        });
-    });
-
-    function changePageSize() {
-        $("#searchForm").submit();
-    }
-</script>
+<script type="text/javascript" th:src="@{/js/clrSearchForm.js}"></script>
 </html>

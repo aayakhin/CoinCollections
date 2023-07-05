@@ -8,7 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yakhin.coincollections.model.Coin;
+import ru.yakhin.coincollections.model.Country;
 import ru.yakhin.coincollections.repository.CoinRepository;
+import ru.yakhin.coincollections.repository.CountryRepository;
 
 
 import java.util.Collections;
@@ -20,9 +22,11 @@ import java.util.Optional;
 public class CoinService {
   
     private final CoinRepository coinRepository;
+    private final CountryRepository countryRepository;
     @Autowired
-    public CoinService(CoinRepository coinRepository) {
+    public CoinService(CoinRepository coinRepository, CountryRepository countryRepository) {
         this.coinRepository = coinRepository;
+        this.countryRepository = countryRepository;
     }
     public List<Coin> findall(){
         return coinRepository.findAll();
@@ -33,8 +37,14 @@ public class CoinService {
         Optional<Coin> foundCoin = coinRepository.findById(id);
         return foundCoin.orElse(null);
     }
+    public List<Coin> coinsByCountry(){
+        CountryService countryService = new CountryService(countryRepository);
+        Country country=countryService.countryById(2);
+        return country.getCoins();
+    }
     @Transactional
     public void save(Coin coin){
+
         coinRepository.save(coin);
     }
     @Transactional
@@ -42,6 +52,7 @@ public class CoinService {
         updatedCoin.setId(id);
         coinRepository.save(updatedCoin);
     }
+
     @Transactional
     public void delete(int id){
         coinRepository.deleteById(id);
@@ -65,7 +76,6 @@ public class CoinService {
         return new PageImpl<>(list, PageRequest.of(currentPage,pageSize), coins.size());
     }
     public Page<Coin> search(String keyword, Pageable pageable){
-        final Page<Coin> coins = coinRepository.findByNameContainingIgnoreCase(keyword,pageable);
-        return coins;
+        return coinRepository.findByNameContainingIgnoreCase(keyword,pageable);
     }
 }
