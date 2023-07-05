@@ -2,7 +2,6 @@ package ru.yakhin.coincollections.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yakhin.coincollections.model.Coin;
 import ru.yakhin.coincollections.model.Country;
 import ru.yakhin.coincollections.repository.CountryRepository;
 

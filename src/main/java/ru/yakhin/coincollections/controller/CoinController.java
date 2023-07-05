@@ -74,13 +74,6 @@ public class CoinController {
         model.addAttribute("coinByName", coinService.findall());
         return "searchresult";
     }
-    @GetMapping("/addcoin")
-    public String addcoin(Model model){
-        model.addAttribute("coin", new Coin());
-        /*List<Country> countries = countryService.countryAll();
-        model.addAttribute("countries", countries);*/
-        return "addcoin";
-    }
     @PostMapping("/addcoin")
     public String add(Coin coin){
          coinService.save(coin);
