@@ -82,9 +82,4 @@ public class CoinController {
         coinService.delete(id);
         return "redirect:/";
     }
-
-/*    @PostMapping
-    public String filter(){
-        return "redirect:/";
-    }*/
 }

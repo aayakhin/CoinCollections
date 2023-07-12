@@ -4,20 +4,6 @@ body
 	font-size: 18px;
 }
 
-.navbar {
-	padding: 0 10px;
-}
-
-*.icon-dark {
-	color: grey;
-}
-
-.message {
-	position: absolute;
-	top: 40px;
-	right:5px;
-}
-
 .search {
 	position: relative;
 }
@@ -43,13 +29,4 @@ body
 	top: 0px;
 	right: 0px;
 	width: 80px;
-}
-
-.size-select {
-	width: 60px;
-	color: #495057;
-	vertical-align: middle;
-	padding: 6px 12px;
-	border: 1px solid #ced4da;
-	border-radius: 0.25rem;
 }

@@ -24,9 +24,10 @@
                 <!-- Фильтр-->
                 <form th:action="@{/filter}">
                     <div class="text-white">Фильтр</div>
-                    <div class="form-check text-white content-center" th:each="cntr: ${countryAll}">
-                        <input class="form-check-input" type="checkbox" value="" th:id="${cntr.getCountryName()}">
-                        <label class="form-check-label" th:for="${cntr.getCountryName()}" th:text="${cntr.getCountryName()}"></label>
+                    <div class="form-check text-white content-center" th:each="country: ${countryAll}">
+                        <label for="filter" class="form-check-label" th:for="${country.getCountryName()}" th:text="${country.getCountryName()}"></label>
+                        <input class="form-check-input" type="checkbox" value="" id="filter">
+
                     </div>
                     <button class="btn btn-secondary" type="submit">Применить</button>
                 </form>
@@ -97,7 +98,7 @@
                     <ul th:if="${coinPaginated.totalPages > 0}" class="pagination justify-content-center">
                         <li class="page-item" th:each="pageNumber : ${pageNumbers}">
                             <a class="page-link" th:href="@{/(size=${coinPaginated.size}, page=${pageNumber})}"
-                               th:classappend="${pageNumber==coinPaginated.number + 1} ? active" th:text=${pageNumber}></a>
+                               th:classappend="${pageNumber==coinPaginated.number + 1} ? active" th:text="${pageNumber}"></a>
                         </li>
                     </ul>
                 </nav>
@@ -138,7 +139,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                                        <input type="submit" for="addNewCoin" class="btn btn-primary"/>
+                                        <input type="submit" th:for="addNewCoin" class="btn btn-primary"/>
                                     </div>
                                 </form>
                             </div>

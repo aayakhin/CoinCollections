@@ -28,19 +28,14 @@ public class CoinService {
         this.coinRepository = coinRepository;
         this.countryRepository = countryRepository;
     }
-    public List<Coin> findall(){
+/*    public List<Coin> findall(){
         return coinRepository.findAll();
-    }
+    }*/
 
     public Coin findOne(int id){
 
         Optional<Coin> foundCoin = coinRepository.findById(id);
         return foundCoin.orElse(null);
-    }
-    public List<Coin> coinsByCountry(){
-        CountryService countryService = new CountryService(countryRepository);
-        Country country=countryService.countryById(2);
-        return country.getCoins();
     }
     @Transactional
     public void save(Coin coin){
