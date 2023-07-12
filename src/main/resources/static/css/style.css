@@ -30,3 +30,12 @@ body
 	right: 0px;
 	width: 80px;
 }
+ul.media-grid li {
+	position: relative;
+	display: inline-block;
+}
+
+.media-grid a {
+	float: none;
+	display: inline-block;
+}
