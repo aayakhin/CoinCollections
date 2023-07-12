@@ -1,3 +1,5 @@
 function clrSearchForm() {
-    $("#searchForm")[0].clear();
+
+    document.getElementById("searchForm").reset();
+    document.getElementById("keyword").value='';
 }

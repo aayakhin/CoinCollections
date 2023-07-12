@@ -8,9 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yakhin.coincollections.model.Coin;
-import ru.yakhin.coincollections.model.Country;
 import ru.yakhin.coincollections.repository.CoinRepository;
-import ru.yakhin.coincollections.repository.CountryRepository;
 
 
 import java.util.Collections;
@@ -22,25 +20,19 @@ import java.util.Optional;
 public class CoinService {
   
     private final CoinRepository coinRepository;
-    private final CountryRepository countryRepository;
+
     @Autowired
-    public CoinService(CoinRepository coinRepository, CountryRepository countryRepository) {
+    public CoinService(CoinRepository coinRepository) {
         this.coinRepository = coinRepository;
-        this.countryRepository = countryRepository;
     }
-    public List<Coin> findall(){
+/*    public List<Coin> findall(){
         return coinRepository.findAll();
-    }
+    }*/
 
     public Coin findOne(int id){
 
         Optional<Coin> foundCoin = coinRepository.findById(id);
         return foundCoin.orElse(null);
-    }
-    public List<Coin> coinsByCountry(){
-        CountryService countryService = new CountryService(countryRepository);
-        Country country=countryService.countryById(2);
-        return country.getCoins();
     }
     @Transactional
     public void save(Coin coin){
