@@ -35,7 +35,7 @@ public class CoinController {
             @RequestParam("size") Optional<Integer> size,
             @RequestParam(required = false) String keyword) {
         int currentPage = page.orElse(1);
-        int pageSize = size.orElse(5);
+        int pageSize = size.orElse(10);
         Pageable paging = PageRequest.of(currentPage-1, pageSize);
         Page<Coin> coinPage ;
 
@@ -44,7 +44,6 @@ public class CoinController {
         } else {
             coinPage = coinService.search(keyword, paging);
         }
-
         model.addAttribute("coinPaginated", coinPage);
 
         int totalPages = coinPage.getTotalPages();
@@ -54,25 +53,23 @@ public class CoinController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-
         model.addAttribute("keyword", keyword);
         List<Country> country= countryService.countryAll();
-        List<Coin> coinby=coinService.coinsByCountry();
-        model.addAttribute("coinBy", coinby);
         model.addAttribute("countryAll", country);
         model.addAttribute("coin", new Coin());
         return "index";
     }
-    @GetMapping("/{id}")
+    @GetMapping("/edit/{id}")
     public String showById(@PathVariable("id") int id, Model model){
         model.addAttribute("coin", coinService.findOne(id));
+        List<Country> country= countryService.countryAll();
+        model.addAttribute("countryAll", country);
         return "editCoin";
     }
-
-    @GetMapping("/search")
-    public String showByName(Model model) {
-        model.addAttribute("coinByName", coinService.findall());
-        return "searchresult";
+    @PostMapping("/edit/{id}")
+    public String update(@ModelAttribute("coin") Coin coin, @PathVariable("id") int id){
+        coinService.update(coin, id);
+        return "redirect:/edit/{id}";
     }
     @PostMapping("/addcoin")
     public String add(Coin coin){
@@ -85,9 +82,9 @@ public class CoinController {
         coinService.delete(id);
         return "redirect:/";
     }
-    @PostMapping("/edit/{id}")
-    public String update(@ModelAttribute("coin") Coin coin, @PathVariable("id") int id){
-        coinService.update(coin, id);
+
+/*    @PostMapping
+    public String filter(){
         return "redirect:/";
-    }
+    }*/
 }
