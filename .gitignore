@@ -4,7 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 database.properties
-/src/main/upload/
+src/main/upload/
 ### STS ###
 .apt_generated
 .classpath
