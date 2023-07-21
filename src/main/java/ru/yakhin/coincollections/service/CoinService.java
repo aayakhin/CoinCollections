@@ -1,4 +1,4 @@
-package ru.yakhin.coincollections.Service;
+package ru.yakhin.coincollections.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,7 +13,6 @@ import ru.yakhin.coincollections.repository.CoinRepository;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,23 +24,16 @@ public class CoinService {
     public CoinService(CoinRepository coinRepository) {
         this.coinRepository = coinRepository;
     }
-/*    public List<Coin> findall(){
-        return coinRepository.findAll();
-    }*/
 
     public Coin findOne(int id){
-
-        Optional<Coin> foundCoin = coinRepository.findById(id);
-        return foundCoin.orElse(null);
+        return coinRepository.findById(id);
     }
     @Transactional
     public void save(Coin coin){
-
         coinRepository.save(coin);
     }
     @Transactional
-    public void update(Coin updatedCoin, int id){
-        updatedCoin.setId(id);
+    public void update(Coin updatedCoin){
         coinRepository.save(updatedCoin);
     }
 
@@ -70,4 +62,9 @@ public class CoinService {
     public Page<Coin> search(String keyword, Pageable pageable){
         return coinRepository.findByNameContainingIgnoreCase(keyword,pageable);
     }
+
+    public Page<Coin> findAllByCountryId(List<Integer> countryIds, Pageable pageable){
+        return coinRepository.findAllByCountryIdIn(countryIds, pageable);
+    }
+
 }

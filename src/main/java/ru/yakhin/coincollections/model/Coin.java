@@ -5,8 +5,7 @@ package ru.yakhin.coincollections.model;
 import jakarta.persistence.*;
 
 
-
-@Entity
+@Entity(name = "coin")
 @Table(name = "coin")
 public class Coin {
     @Id
@@ -22,29 +21,27 @@ public class Coin {
     @Column(name = "description")
     private String description;
     @Column(name = "coin_sides")
-    private String coin_sides;
-
+    private String coinSides;
+    @Column(name = "avers_name")
+    private String aversName;
+    @Column(name = "revers_name")
+    private String reversName;
     @ManyToOne
     @JoinColumn(name = "c_id", referencedColumnName = "country_id")
     private Country country;
 
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
-
     public Coin() {
     }
-    public Coin(String denomination, String name, String date, String description, String coin_sides, Country country) {
+
+    public Coin(int id, String denomination, String name, String date, String description, String coinSides, String aversName, String reversName, Country country) {
+        this.id = id;
         this.denomination = denomination;
         this.name = name;
         this.date = date;
         this.description = description;
-        this.coin_sides = coin_sides;
+        this.coinSides = coinSides;
+        this.aversName = aversName;
+        this.reversName = reversName;
         this.country = country;
     }
     public int getId() {
@@ -85,11 +82,33 @@ public class Coin {
     public void setDescription(String description) {
         this.description = description;
     }
-    public String getCoin_sides() {
-        return coin_sides;
+    public String getCoinSides() {
+        return coinSides;
+    }
+    public Country getCountry() {
+        return country;
     }
 
-    public void setCoin_sides(String coin_sides) {
-        this.coin_sides = coin_sides;
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public void setCoinSides(String coinSides) {
+        this.coinSides = coinSides;
+    }
+    public String getAversName() {
+        return aversName;
+    }
+
+    public void setAversName(String aversName) {
+        this.aversName = aversName;
+    }
+
+    public String getReversName() {
+        return reversName;
+    }
+
+    public void setReversName(String reversName) {
+        this.reversName = reversName;
     }
 }
