@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +21,7 @@ public class UploadController {
     public UploadController(CoinService coinService) {
         this.coinService = coinService;
     }
-    @PostMapping("/aversImageUpload/{id}")
+    @PatchMapping("/aversImageUpload/{id}")
     public String aversImageUpload(@ModelAttribute("coin") Coin coin,
                          @RequestParam("image") MultipartFile multipartFile) throws IOException {
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());

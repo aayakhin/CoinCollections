@@ -168,10 +168,9 @@
                             <h5 class="modal-title" id="aversImageUploadModalLabel">Image Upload</h5>
                         </div>
                         <div class="modal-body">
-                            <form id="aversImageUpload" th:method="POST" th:action="@{/aversImageUpload/{id}(id=${coin.getId()})}" th:object="${coin}"
+                            <form id="aversImageUpload" th:method="PATCH" th:action="@{/aversImageUpload/{id}(id=${coin.getId()})}" th:object="${coin}"
                                   enctype="multipart/form-data">
                                 <div>
-
                                     <label>Image: </label>
                                     <input type="file" name="image" accept="image/png, image/jpeg" />
                                     <input type="hidden" th:field="*{name}" />
@@ -180,7 +179,7 @@
                                     <input type="hidden" th:field="*{description}" />
                                     <input type="hidden" th:field="*{coinSides}" />
                                     <input type="hidden" th:field="*{country.id}"/>
-                                    <input type="hidden" th:field="*{reversName}">
+                                    <input type="hidden" th:field="*{reversName}"/>
                                 </div>
                             </form>
                         </div>
@@ -202,7 +201,6 @@
                             <form id="reversImageUpload" th:method="POST" th:action="@{/reversImageUpload/{id}(id=${coin.getId()})}" th:object="${coin}"
                                   enctype="multipart/form-data">
                                 <div>
-
                                     <label>Image: </label>
                                     <input type="file" name="image" accept="image/png, image/jpeg" />
                                     <input type="hidden" th:field="*{name}" />
